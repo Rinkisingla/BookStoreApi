@@ -1,4 +1,4 @@
-import mongoose, {schema} from mongoose;
+import mongoose, {schema} from "mongoose";
  const userschema = new schema({
     fullname:{
         type:String,

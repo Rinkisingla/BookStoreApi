@@ -1,8 +1,10 @@
 import express from "express";
-//const express = require(`express`);
+import { connectdb } from "./database/index.js";
+import dotenv from "dotenv";
+dotenv.config();
  const app = express();
  const port= 4000
-
+connectdb();
  app.get('\route',(req, res)=>{
     res.send("this router is working sucessfully");
  })
