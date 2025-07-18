@@ -50,9 +50,9 @@ import jwt from "jsonwebtoken";
            username: this.username,
 
         },
-        process.env.ACCESSTOKENENGENERATE,
+        process.env.ACCESS_TOKEN_SECRET,
         {
-            expiresIn: process.env.ACCESSTOKENEXPIRESIN
+            expiresIn: process.env.AccessTokenExpireIn
         }
     )
      }
@@ -62,9 +62,9 @@ import jwt from "jsonwebtoken";
           
 
         },
-        process.env.REFRESHTOKENENGENERATE,
+        process.env.REFRESH_TOKEN_SECRET,
         {
-            expiresIn: process.env.REFRESHTOKENEXPIRESIN
+            expiresIn: process.env.RefreshTokenExpireIn
         }
     )
      }
