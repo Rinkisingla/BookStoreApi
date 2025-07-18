@@ -1,24 +1,26 @@
-import mongoose, {schema} from "mongoose";
- const userschema = new schema({
+import mongoose, {Schema} from "mongoose";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+ const userschema = new Schema({
     fullname:{
         type:String,
-        require:true,
+        required: true,
         unique:true,
     },
     username:{
         type:String,
-        require:true,
+        required: true,
         lowercase:true,
         unique:true,
     },
     email:{
         type:String,
-        require:true,
+        required: true,
         unique:true,
     },
     password:{
         type:String,
-        require:true,
+        required: true,
         unique:true,
     },
     refreshToken:{
@@ -26,7 +28,7 @@ import mongoose, {schema} from "mongoose";
     }
 
  },{timestamps:true})
-   userschema.pre('save', async function(){// hashing the password
+   userschema.pre('save', async function(next){// hashing the password
      if(!this.isModified('password')) return next();
       try{
          const salt = await bcrypt.genSalt(10);
@@ -34,7 +36,7 @@ import mongoose, {schema} from "mongoose";
           next();
       }
       catch(error){
-         throw next(error);
+         return next(error);
       }
       
    })
@@ -43,27 +45,28 @@ import mongoose, {schema} from "mongoose";
     }
      userschema.methods.generateaccesstoken = function(){
         return jwt.sign({
-           id: this.id,
+           id: this._id,
            fullname: this.fullname,
            username: this.username,
 
         },
         process.env.ACCESSTOKENENGENERATE,
         {
-            expiresIn:ACCESSTOKENEXPIRESIN
+            expiresIn: process.env.ACCESSTOKENEXPIRESIN
         }
     )
      }
       userschema.methods.generaterefreshtoken = function(){
         return jwt.sign({
-           id: this.id,
+           id: this._id,
           
 
         },
         process.env.REFRESHTOKENENGENERATE,
         {
-            expiresIn:REFRESHTOKENEXPIRESIN
+            expiresIn: process.env.REFRESHTOKENEXPIRESIN
         }
     )
      }
-  export default User =  mongoose.model("User",userschema)
+  const User = mongoose.model("User", userschema);
+export default User;
